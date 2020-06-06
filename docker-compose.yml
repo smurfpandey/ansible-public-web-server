@@ -1,0 +1,5 @@
+control-machine:
+    image: smurfpandey/ansible-cm:latest
+    volumes:
+      - .:/ansible/playbooks
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa

@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - { role: 'fail2ban' }
+
+  tasks:
+  - name: Congratulations!
+    debug:
+      msg:
+        - "Your server is ready!"
