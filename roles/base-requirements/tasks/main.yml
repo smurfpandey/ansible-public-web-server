@@ -1,0 +1,31 @@
+---
+- name: Enable universe repository
+  apt_repository:
+    repo: "{{ item }}"
+    update_cache: false
+  loop:
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe"
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates universe"
+    - "deb http://security.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security universe"
+  when: ansible_distribution == 'Ubuntu'
+  register: universe_installed
+  become: true
+
+- name: Update apt repository
+  apt:
+    update_cache: true
+  when: universe_installed.changed
+  become: true
+
+- name: Install common packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+      - libffi-dev
+    allow_unauthenticated: true
+    install_recommends: no
+    state: present
