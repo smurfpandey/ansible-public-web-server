@@ -1,0 +1,51 @@
+---
+- name: Log on which Linux distro Docker is going to be installed
+  debug:
+    msg: "The distro is: {{ ansible_distribution|lower }} and the version name is: {{ ansible_distribution_release }}"
+
+- name: Install needed packages (see https://docs.docker.com/install/linux/docker-ce/debian/#set-up-the-repository)
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+      - libffi-dev
+    allow_unauthenticated: true
+    install_recommends: no
+    state: latest
+
+- name: Add Docker apt key
+  apt_key:
+    url: https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: Add Docker apt repo (as shown in step 4 of https://docs.docker.com/install/linux/docker-ce/debian/#set-up-the-repository)
+  shell: |
+    echo "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} \
+    {{ ansible_distribution_release }} stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list
+  become: true
+
+- name: Install Docker apt package
+  apt:
+    pkg: docker-ce
+    state: latest
+    update_cache: yes
+    install_recommends: no
+
+- name: Install Docker Compose
+  get_url:
+    url : https://github.com/docker/compose/releases/download/1.26.0/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
+    dest: /usr/local/bin/docker-compose
+    mode: a+x
+
+- name: add current user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups:
+      - docker
+    append: yes
+  become: true
