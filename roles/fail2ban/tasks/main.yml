@@ -9,6 +9,16 @@
   notify:
     - restart fail2ban
 
+- name: copy nginx filters
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/fail2ban/filter.d/{{ item }}"
+  with_items:
+    - nginx-http-auth.conf
+    - nginx-noscript.conf
+    - nginx-nohome.conf
+    - nginx-noproxy.conf
+
 - name: ensure fail2ban is configured
   template:
     src: "{{ item }}.j2"

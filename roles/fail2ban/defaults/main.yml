@@ -15,7 +15,7 @@ fail2ban_socket: /var/run/fail2ban/fail2ban.sock
 fail2ban_ignoreip: 127.0.0.1/8
 
 # How long in seconds should the ban last for?
-fail2ban_bantime: 600
+fail2ban_bantime: 3600
 
 # How many times can they try before getting banned?
 fail2ban_maxretry: 6
@@ -85,6 +85,35 @@ fail2ban_services:
     # How should the ban be applied?
     # OPTIONAL: Defaults to the banaction listed above.
     banaction: iptables-multiport
+
+  - name: nginx-http-auth
+    filter: nginx-http-auth
+    port: http,https
+    logpath: /var/log/nginx/error.log
+
+  - name: nginx-noscript
+    enabled: true
+    filter: nginx-noscript
+    port: http,https
+    logpath: /var/log/nginx/access.log
+
+  - name: nginx-badbots
+    filter: apache-badbots.conf
+    port: http,https
+    logpath: /var/log/nginx/access.log
+    maxretry: 2
+
+  - name: nginx-nohome
+    filter: nginx-nohome
+    port: http,https
+    logpath: /var/log/nginx/access.log
+    maxretry: 2
+
+  - name: nginx-noproxy
+    filter: nginx-noproxy
+    port: http,https
+    logpath: /var/log/nginx/access.log
+    maxretry: 2
 
 # The amount in seconds to cache apt-update.
 apt_cache_valid_time: 86400
