@@ -1,0 +1,4 @@
+---
+
+cloudflare_credentials: '/opt/certbot/cloudflare_credentials.ini'
+docker_compose_binary: /usr/local/bin/docker-compose

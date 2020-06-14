@@ -1,0 +1,49 @@
+---
+- name: Create nginx app directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ app_directory }}"
+    - "{{ nginx_log_directory }}"
+    - "{{ nginx_config_directory }}"
+    - "{{ nginx_dhparam_directory }}"
+
+- name: Pull nginx image from docker hub
+  docker_image:
+    name: "{{ docker_image_tag }}"
+    source: pull
+
+- name: Create ssl_dhparam
+  openssl_dhparam:
+    path: "{{ ssl_dhparam_file }}"
+    size: 2048
+
+- name: Create nginx log files
+  file:
+    path: "{{ item }}"
+    state: touch
+    mode: 0775
+    modification_time: preserve
+    access_time: preserve
+  with_items:
+    - "{{ nginx_access_log }}"
+    - "{{ nginx_error_log }}"
+
+- name: Create docker-compose.yml for nginx
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ app_directory }}/docker-compose.yml"
+  notify: Restart nginx
+
+- name: Create nginx conf file
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_config_directory }}/nginx.conf"
+  register: nginx_config
+  notify: Reload nginx
+
+# - name: Start nginx
+#   docker_compose:
+#     project_src: "{{ app_directory }}"
+#   register: nginx_startup_output

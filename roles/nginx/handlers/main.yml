@@ -1,0 +1,8 @@
+---
+- name: Reload nginx
+  command: docker kill --signal=HUP nginx
+
+- name: Restart nginx
+  docker_compose:
+    project_src: "{{ app_directory }}"
+    restarted: yes

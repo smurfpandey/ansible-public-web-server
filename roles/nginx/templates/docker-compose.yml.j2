@@ -1,0 +1,16 @@
+version: '3.2'
+
+services:
+  nginx: # Self hosted netflix
+    image: {{ docker_image_tag }}
+    container_name: nginx
+    ports:
+      - "80:80/tcp"  # http
+      - "443:443/tcp"  # https
+    volumes:
+      - {{ nginx_config_directory }}:/etc/nginx/conf.d
+      - {{ nginx_access_log }}:{{ nginx_access_log }}
+      - {{ nginx_error_log }}:{{ nginx_error_log }}
+      - {{ ssl_dhparam_file }}:/etc/ssl/certs/dhparam-2048.pem
+      - {{ letsencrypt_cert_location }}:{{ letsencrypt_cert_location }}
+

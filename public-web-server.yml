@@ -6,6 +6,8 @@
     - { role: 'fail2ban' }
     - { role: 'docker' }
     - { role: 'certbot' }
+    - { role: 'ssl-neerajverma_dev' }
+    - { role: 'nginx' }
 
   tasks:
   - name: Congratulations!

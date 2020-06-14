@@ -1,0 +1,13 @@
+---
+
+app_directory: '/opt/nginx'
+nginx_config_directory: /opt/nginx/config
+nginx_log_directory: /var/log/nginx
+nginx_dhparam_directory: /opt/nginx/certs
+docker_image_tag: nginx:1.19.0-alpine
+nginx_access_log: /var/log/nginx/access.log
+nginx_error_log: /var/log/nginx/error.log
+default_domain: pws.neerajverma.dev
+letsencrypt_cert_location: /etc/letsencrypt
+letsenccrypt_cert_name: neerajverma.dev
+ssl_dhparam_file: /opt/nginx/certs/dhparam-2048.pem

@@ -1,8 +1,4 @@
 ---
-- name: Log on which Linux distro Docker is going to be installed
-  debug:
-    msg: "The distro is: {{ ansible_distribution|lower }} and the version name is: {{ ansible_distribution_release }}"
-
 
 - name: Add Docker apt key
   apt_key:
@@ -10,25 +6,33 @@
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
 
-- name: Add Docker apt repo (as shown in step 4 of https://docs.docker.com/install/linux/docker-ce/debian/#set-up-the-repository)
-  shell: |
-    echo "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} \
-    {{ ansible_distribution_release }} stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list
+- name: Add docker apt repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable
+    state: present
+    filename: docker
+  register: docker_repo
+  become: true
+
+- name: Update apt repository
+  apt:
+    update_cache: true
+  when: docker_repo.changed
   become: true
 
 - name: Install Docker apt package
   apt:
     pkg: docker-ce
     state: present
-    update_cache: yes
     install_recommends: no
 
+- name: Install python package to working with native anisble modules
+  pip:
+    name: docker
+
 - name: Install Docker Compose
-  get_url:
-    url : https://github.com/docker/compose/releases/download/1.26.0/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
-    dest: /usr/local/bin/docker-compose
-    mode: a+x
+  pip:
+    name: docker-compose
 
 - name: add current user to docker group
   user:
