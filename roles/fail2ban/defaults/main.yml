@@ -92,13 +92,12 @@ fail2ban_services:
     logpath: /var/log/nginx/error.log
 
   - name: nginx-noscript
-    enabled: true
     filter: nginx-noscript
     port: http,https
     logpath: /var/log/nginx/access.log
 
   - name: nginx-badbots
-    filter: apache-badbots.conf
+    filter: apache-badbots
     port: http,https
     logpath: /var/log/nginx/access.log
     maxretry: 2
