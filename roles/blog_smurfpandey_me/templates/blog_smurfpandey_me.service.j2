@@ -1,0 +1,15 @@
+[Unit]
+Description=Service for blog.smurfpandey.me
+After=nginx.service
+Requires=nginx.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ app_directory }}
+ExecStart={{ app_directory }}/blog-service.sh start
+ExecStop={{ app_directory }}/blog-service.sh stop
+ExecReload={{ app_directory }}/blog-service.sh restart
+
+[Install]
+WantedBy=multi-user.target
