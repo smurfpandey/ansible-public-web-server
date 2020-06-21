@@ -7,13 +7,24 @@ services:
     depends_on:
       - {{ db_service_name }}
     environment:
+      url: https://{{ domain_name }}
       # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      # Database
       database__client: mysql
       database__connection__host: {{ db_service_name }}
       database__connection__user: root
       database__connection__password: {{ mysql_password }}
       database__connection__database: ghost
-      url: https://{{ domain_name }}
+      # Mail
+      mail__transport: SMTP
+      mail__from: {{ mail_sender }}
+      mail__options__service: "Sendgrid"
+      mail__options__host: "smtp.sendgrid.net"
+      mail__options__port: 465
+      mail__options__secureConnection: "true"
+      mail__options__auth__user: "apikey"
+      mail__options__auth__pass: "{{ sendgrid_api_key }}"
+
     volumes:
       - {{ content_directory }}:/var/lib/ghost/content
     networks:
