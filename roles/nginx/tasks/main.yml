@@ -34,14 +34,32 @@
   template:
     src: docker-compose.yml.j2
     dest: "{{ app_directory }}/docker-compose.yml"
-  notify: Restart nginx
+  notify: restart nginx
 
 - name: Create nginx conf file
   template:
     src: nginx.conf.j2
     dest: "{{ nginx_config_directory }}/nginx.conf"
   register: nginx_config
-  notify: Reload nginx
+  notify: reload nginx
+
+- name: Create nginx service file
+  template:
+    src: nginx.service.j2
+    dest: "{{ app_directory }}/nginx.service"
+  notify: reload systemd
+
+- name: Install nginx service
+  file:
+    src: "{{ app_directory }}/nginx.service"
+    dest: /etc/systemd/system/nginx.service
+    state: link
+
+- name: ensure nginx starts on a fresh reboot
+  service:
+    name: nginx
+    state: started
+    enabled: yes
 
 # - name: Start nginx
 #   docker_compose:

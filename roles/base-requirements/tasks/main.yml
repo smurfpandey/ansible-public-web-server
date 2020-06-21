@@ -35,3 +35,8 @@
     allow_unauthenticated: true
     install_recommends: no
     state: present
+
+- name: Pull docker images needed by multiple services
+  docker_image:
+    name: willwill/wait-for-it:latest
+    source: pull

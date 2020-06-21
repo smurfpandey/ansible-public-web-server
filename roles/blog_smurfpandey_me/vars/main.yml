@@ -1,0 +1,19 @@
+---
+
+app_directory: '/opt/blog_smurfpandey_me'
+content_directory: '/opt/blog_smurfpandey_me/content'
+mysql_data_directory: '/opt/blog_smurfpandey_me/mysql'
+ghost_image_tag: 'ghost:3.20.2-alpine'
+mysql_image_tag: 'mysql:5.7.30'
+mysql_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64343138613232336363656638626337656137303831626532396166373130616535393164306132
+          6335643239633866653066333437303631323264323563660a333333366134316535323962316235
+          33306230353639323231376139393066383262313734373136356163336261376332623633303361
+          3766376336623866610a336232373930303162353039303363393132666438316330356335353839
+          36386234306437623234646262373738373537316361633332636131353334313934
+db_service_name: blog_smurf_db
+wait_for_it_service_name: blog_smurf_wait_for_db
+ghost_service_name: blog_smurf
+domain_name: blog.neerajverma.dev
+blog_port: 2368

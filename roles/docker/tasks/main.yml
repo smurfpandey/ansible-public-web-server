@@ -12,13 +12,11 @@
     state: present
     filename: docker
   register: docker_repo
-  become: true
 
 - name: Update apt repository
   apt:
     update_cache: true
   when: docker_repo.changed
-  become: true
 
 - name: Install Docker apt package
   apt:
@@ -40,4 +38,3 @@
     groups:
       - docker
     append: yes
-  become: true

@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+  {{ ghost_service_name }}:
+    image: {{ ghost_image_tag }}
+    container_name: blog_smurfpandey_me
+    depends_on:
+      - {{ db_service_name }}
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      database__client: mysql
+      database__connection__host: {{ db_service_name }}
+      database__connection__user: root
+      database__connection__password: {{ mysql_password }}
+      database__connection__database: ghost
+      url: https://{{ domain_name }}
+    volumes:
+      - {{ content_directory }}:/var/lib/ghost/content
+    networks:
+      - {{ nginx_network_name }}
+      - default
+
+  {{ db_service_name }}:
+    image: {{ mysql_image_tag }}
+    container_name: blog_smurfpandey_me_db
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ mysql_password }}
+    volumes:
+      - {{ mysql_data_directory }}:/var/lib/mysql
+    networks:
+      - default
+
+  {{ wait_for_it_service_name }}:
+    image: willwill/wait-for-it:latest
+    container_name: blog_smurfpandey_me_wait
+    networks:
+      - default
+
+
+networks:
+  {{ nginx_network_name }}:
+    external: true

@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: yes
+  handlers:
+    - import_tasks: handlers/main.yml
   roles:
     - { role: 'base-requirements' }
     - { role: 'fail2ban' }
@@ -8,6 +10,7 @@
     - { role: 'certbot' }
     - { role: 'ssl-neerajverma_dev' }
     - { role: 'nginx' }
+    - { role: 'blog_smurfpandey_me' }
 
   tasks:
   - name: Congratulations!

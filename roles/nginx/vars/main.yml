@@ -1,7 +1,6 @@
 ---
 
 app_directory: '/opt/nginx'
-nginx_config_directory: /opt/nginx/config
 nginx_log_directory: /var/log/nginx
 nginx_dhparam_directory: /opt/nginx/certs
 docker_image_tag: nginx:1.19.0-alpine
