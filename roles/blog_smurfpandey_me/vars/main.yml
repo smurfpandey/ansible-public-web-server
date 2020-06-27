@@ -5,6 +5,7 @@ content_directory: '/opt/blog_smurfpandey_me/content'
 mysql_data_directory: '/opt/blog_smurfpandey_me/mysql'
 ghost_image_tag: 'ghost:3.20.2-alpine'
 mysql_image_tag: 'mysql:5.7.30'
+letsenccrypt_cert_name: 'smurfpandey.me'
 mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           64343138613232336363656638626337656137303831626532396166373130616535393164306132
@@ -15,7 +16,7 @@ mysql_password: !vault |
 db_service_name: blog_smurf_db
 wait_for_it_service_name: blog_smurf_wait_for_db
 ghost_service_name: blog_smurf
-domain_name: blog.neerajverma.dev
+domain_name: blog.smurfpandey.me
 blog_port: 2368
 sendgrid_api_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -34,4 +35,6 @@ mail_sender: !vault |
           63373161323364373133333564353736623733373833656231666330386534636134353334656263
           6164353837636664340a376563613266623265666565353130373939656130373966613630633962
           34393930646662346366336161616133373263376265326262383530646432626266
-
+blog_dns_zone: 'smurfpandey.me'
+blog_dns_record: 'blog'
+blog_dns_value: 'pws.neerajverma.dev'

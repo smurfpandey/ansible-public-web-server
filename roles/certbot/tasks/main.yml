@@ -19,7 +19,7 @@
 
 - name: check if a certbot account exists
   stat:
-    path: /etc/letsencrypt/accounts
+    path: "{{ letsencrypt_cert_location }}/accounts"
   register: letsencrypt_accounts_dir
 
 - name: register certbot account

@@ -4,7 +4,7 @@
     path: "{{ letsencrypt_cert_location }}/live/{{ certbot_domains | first | replace('*.', '') }}/cert.pem"
   register: letsencrypt_cert
 
-- name: Get certificate for neerajverma.dev
+- name: Get certificate for smurfpandey.me
   command: >
     certbot certonly
     --dns-cloudflare
