@@ -5,7 +5,7 @@ content_directory: '/opt/blog_smurfpandey_me/content'
 mysql_data_directory: '/opt/blog_smurfpandey_me/mysql'
 ghost_image_tag: 'ghost:3.20.2-alpine'
 mysql_image_tag: 'mysql:5.7.30'
-letsenccrypt_cert_name: 'smurfpandey.me'
+letsencrypt_cert_name: 'smurfpandey.me'
 mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           64343138613232336363656638626337656137303831626532396166373130616535393164306132

@@ -1,0 +1,15 @@
+[Unit]
+Description=Service for comments.smurfpandey.me
+After=nginx.service
+Requires=nginx.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ app_directory }}
+ExecStart={{ docker_compose_binary }} up -d
+ExecStop={{ docker_compose_binary }} stop
+ExecReload={{ docker_compose_binary }} restart
+
+[Install]
+WantedBy=multi-user.target

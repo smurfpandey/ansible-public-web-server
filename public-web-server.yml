@@ -12,6 +12,7 @@
     - { role: 'ssl-smurfpandey_me' }
     - { role: 'nginx' }
     - { role: 'blog_smurfpandey_me' }
+    - { role: 'comments_smurfpandey_me' }
 
   tasks:
   - name: Congratulations!

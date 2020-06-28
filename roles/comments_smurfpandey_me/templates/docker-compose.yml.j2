@@ -1,0 +1,25 @@
+version: '3.2'
+
+services:
+  {{ app_service_name }}:
+    image: {{ remark42_image_tag }}
+    container_name: "remark42"
+    hostname: "remark42"
+    environment:
+      - REMARK_URL=https://{{ domain_name }}
+      - SECRET={{ app_secret }}
+      - SITE=blog-smurf
+      - STORE_BOLT_PATH=/srv/var/db
+      - BACKUP_PATH=/srv/var/backup
+      - AVATAR_FS_PATH=/srv/var/avatars
+      - IMAGE_FS_PATH=/srv/var/pictures
+      - AUTH_FACEBOOK_CID={{ auth_facebook_cid }}
+      - AUTH_FACEBOOK_CSEC={{ auth_facebook_csec }}
+    volumes:
+      - {{ data_directory }}:/srv/var
+    networks:
+      - {{ nginx_network_name }}
+
+networks:
+  {{ nginx_network_name }}:
+    external: true
