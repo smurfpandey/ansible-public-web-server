@@ -18,6 +18,12 @@
     name: comments_smurfpandey_me
     state: restarted
 
+- name: restart matrix_smurfpandey_me
+  service:
+    name: matrix_smurfpandey_me
+    state: restarted
+
+
 - name: reload systemd
   systemd:
     daemon_reload: yes

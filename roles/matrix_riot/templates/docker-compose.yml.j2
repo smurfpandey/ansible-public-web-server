@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+  {{ docker_compose.matrix_synapse_service_name }}:
+    image: {{ docker_image.matrix_synapse }}
+    container_name: {{ docker_compose.matrix_synapse_service_name }}
+    user: "{{ matrix_user_uid }}:{{ matrix_user_gid }}"
+    environment:
+      UID: {{ matrix_user_uid }}
+      GID: {{ matrix_user_gid }}
+    depends_on:
+      - {{ docker_compose.postgres_service_name }}
+    volumes:
+      - {{ synapse_data_directory }}:/data
+    networks:
+      - {{ nginx_network_name }}
+      - default
+
+  {{ docker_compose.postgres_service_name }}:
+    image: {{ docker_image.postgres }}
+    container_name: {{ docker_compose.postgres_service_name }}
+    user: "{{ matrix_user_uid }}:{{ matrix_user_gid }}"
+    environment:
+      POSTGRES_USER: {{ matrix_postgres_username }}
+      POSTGRES_PASSWORD: {{ matrix_postgres_password }}
+      POSTGRES_DB: {{ matrix_postgres_db_name }}
+      POSTGRES_INITDB_ARGS: "--lc-collate C --lc-ctype C --encoding UTF8"
+    volumes:
+      - {{ postgres_data_directory }}:/var/lib/postgresql/data
+      - /etc/passwd:/etc/passwd:ro # Allow postgres to read users list
+    networks:
+      - default
+
+  {{ docker_compose.wait_for_it_service_name }}:
+    image: {{ docker_image.wait_for_it }}
+    container_name: wait_for_it_service_name
+    networks:
+        - default
+
+networks:
+  {{ nginx_network_name }}:
+    external: true

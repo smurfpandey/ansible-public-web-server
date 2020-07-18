@@ -1,0 +1,16 @@
+[Unit]
+Description=Service for matrix.smurfpandey.me
+After=nginx.service
+Requires=nginx.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ app_directory }}
+ExecStart={{ app_directory }}/matrix-synapse-service.sh start
+ExecStop={{ app_directory }}/matrix-synapse-service.sh stop
+ExecReload={{ app_directory }}/matrix-synapse-service.sh restart
+SyslogIdentifier=matrix-synapse
+
+[Install]
+WantedBy=multi-user.target

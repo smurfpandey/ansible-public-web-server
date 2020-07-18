@@ -1,8 +1,17 @@
 # ansible-public-web-server
 Ansible playbooks to setup my public-web-server
 
-```
-docker-compose run --rm control-machine site.yml -i hosts.ini --ask-vault-pass --ask-become-pass
+``` shell
+# 1. Set sudo password on local machine env vars
+> set SUDO_PASS=<sudo password> # Windows Command Prompt
+> export SUDO_PASS=<sudo password> # Unix
+
+# 2. Set ansible vault password
+> set "ANSIBLE_VAULT_PASS=<vault pass>"
+> export ANSIBLE_VAULT_PASS=<vault pass>
+
+# 3. Run control machine via docker-compose
+> docker-compose run --rm control-machine --vault-password-file /tmp/ansible_vault_pass site.yml -i hosts.ini
 ```
 
 ```

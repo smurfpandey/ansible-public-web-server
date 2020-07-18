@@ -32,6 +32,7 @@
       - software-properties-common
       - libffi-dev
       - python3-pip
+      - ntp
     allow_unauthenticated: true
     install_recommends: no
     state: present

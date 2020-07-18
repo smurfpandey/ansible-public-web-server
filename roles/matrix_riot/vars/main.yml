@@ -1,0 +1,53 @@
+---
+
+matrix_user_username: "matrix"
+matrix_user_groupname: "matrix"
+matrix_user_uid: ~
+matrix_user_gid: ~
+
+app_directory: "/opt/matrix-riot"
+config_directory: "/opt/matrix-riot/config"
+data_directory: "/opt/matrix-riot/data"
+postgres_data_directory: "/opt/matrix-riot/data/postgres"
+synapse_data_directory: "/opt/matrix-riot/data/synapse"
+riot_data_directory: "/opt/matrix-riot/data/riot"
+docker_image:
+  matrix_synapse: "matrixdotorg/synapse:v1.17.0"
+  postgres: "postgres:9.6.18-alpine"
+  wait_for_it: "willwill/wait-for-it:latest"
+docker_compose:
+  matrix_synapse_service_name: "matrix_synapse"
+  postgres_service_name: "matrix_postgres"
+  wait_for_it_service_name: "matrix_wait_for_it"
+matrix_synapse_port: 8008
+matrix_postgres_username: synapse
+matrix_postgres_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35373765303562623736333365343631636538396434323161323239303330363963366465643161
+          6235336432623830663363333431653734633463383833330a356436333138653862653338366266
+          33666136636464383162663137336232623235373933366539643364313263633930306239623966
+          3061396165636130340a613164383137353162386133336362333630396636393639346261383730
+          66653838616635363935306665316332306238623635326362323163303230386539
+matrix_postgres_db_name: synapse
+matrix_server_name: smurfpandey.me
+matrix_domain_name: matrix.{{ matrix_server_name }}
+matrix_base_url: "https://{{ matrix_domain_name }}"
+matrix_synapse_use_presence: true
+matrix_synapse_default_room_version: 5
+matrix_synapse_federation_domain_whitelist: []
+matrix_synapse_federation_enabled: false
+matrix_synapse_metrics_enabled: false
+matrix_synapse_log_level: "WARNING"
+matrix_synapse_storage_sql_log_level: "WARNING"
+matrix_synapse_root_log_level: "WARNING"
+matrix_dns_zone: "{{ matrix_server_name }}"
+matrix_dns_record: "matrix"
+matrix_dns_value: "pws.neerajverma.dev"
+matrix_ssl_cert_name: 'smurfpandey.me'
+matrix_shared_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36613062616232323866613761376332633231383031333864643234346235626336316430373636
+          6466316535343936303933633637643664326131386338610a336462626132343839623331326366
+          39393362316231653861323066626165633961316631613765383964353537613936643433616165
+          3231313133663634630a666334653864313761303230346332303563356536613938383135306663
+          65386635393034343438376639666233386335363938353464633765393166386433
