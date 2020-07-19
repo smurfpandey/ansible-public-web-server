@@ -5,6 +5,7 @@
     state: directory
   with_items:
     - "{{ app_directory }}"
+    - "{{ nginx_webhost_directory }}"
     - "{{ nginx_log_directory }}"
     - "{{ nginx_config_directory }}"
     - "{{ nginx_dhparam_directory }}"

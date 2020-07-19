@@ -1,0 +1,98 @@
+---
+
+- name: Check if a Synapse signing key exists
+  stat:
+    path: "{{ synapse_data_directory }}/{{ matrix_domain_name }}.signing.key"
+  register: matrix_synapse_signing_key_stat
+
+# We do this so that the signing key would get generated.
+#
+# This will also generate a default homeserver.yaml configuration file and a log configuration file.
+# We don't care about those configuraiton files, as we replace them with our own anyway (see below).
+#
+# We don't use the `docker_container` module, because using it with `cap_drop` requires
+# a very recent version, which is not available for a lot of people yet.
+- name: Generate initial Synapse config and signing key
+  command: |
+    docker run
+    --rm
+    --name=matrix-config
+    --user={{ matrix_user_uid }}:{{ matrix_user_gid }}
+    --cap-drop=ALL
+    -v {{ synapse_data_directory }}:/data
+    -e UID={{ matrix_user_uid }}
+    -e GID={{ matrix_user_gid }}
+    -e SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+    -e SYNAPSE_SERVER_NAME={{ matrix_domain_name }}
+    -e SYNAPSE_REPORT_STATS=no
+    {{ docker_image.matrix_synapse }}
+    generate
+  when: "not matrix_synapse_signing_key_stat.stat.exists"
+
+- name: Create docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ app_directory }}/docker-compose.yml"
+    owner: "{{ matrix_user_username }}"
+    group: "{{ matrix_user_groupname }}"
+  notify: restart matrix_smurfpandey_me
+
+- name: Create startup file
+  template:
+    src: matrix-synapse-service.sh.j2
+    dest: "{{ app_directory }}/matrix-synapse-service.sh"
+    mode: 'a+x'
+    owner: "{{ matrix_user_username }}"
+    group: "{{ matrix_user_groupname }}"
+
+- name: Create matrix app config
+  template:
+    src: matrix-config.yml.j2
+    dest: "{{ synapse_data_directory }}/homeserver.yaml"
+    mode: '0644'
+    owner: "{{ matrix_user_username }}"
+    group: "{{ matrix_user_groupname }}"
+  notify: restart matrix_smurfpandey_me
+
+- name: Create matrix log config
+  template:
+    src: synapse.log.config.j2
+    dest: "{{ synapse_data_directory }}/{{ matrix_domain_name }}.log.config"
+    mode: '0644'
+    owner: "{{ matrix_user_username }}"
+    group: "{{ matrix_user_groupname }}"
+  notify: restart matrix_smurfpandey_me
+
+- name: Create nginx config
+  template:
+    src: nginx.synapse.conf.j2
+    dest: "{{ nginx_config_directory }}/matrix-smurfpandey-me.conf"
+  notify: reload nginx
+
+- name: Create systemd service file
+  template:
+    src: matrix_smurfpandey_me.service.j2
+    dest: "{{ app_directory }}/matrix_smurfpandey_me.service"
+  notify: reload systemd
+
+- name: Install systemd service
+  file:
+    src: "{{ app_directory }}/matrix_smurfpandey_me.service"
+    dest: /etc/systemd/system/matrix_smurfpandey_me.service
+    state: link
+
+- name: ensure app starts on a fresh reboot
+  service:
+    name: matrix_smurfpandey_me
+    state: started
+    enabled: yes
+
+- name: Create CNAME record to point to the server
+  cloudflare_dns:
+    zone: "{{ matrix_dns_zone }}"
+    record: "{{ matrix_dns_record }}"
+    type: CNAME
+    proxied: true
+    value: "{{ matrix_dns_value }}"
+    account_email: "{{ cloudflare_email }}"
+    account_api_token: "{{ cloudflare_api_key }}"

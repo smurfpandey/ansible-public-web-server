@@ -3,7 +3,7 @@ version: '3.2'
 services:
   {{ ghost_service_name }}:
     image: {{ ghost_image_tag }}
-    container_name: blog_smurfpandey_me
+    container_name: {{ ghost_service_name }}
     depends_on:
       - {{ db_service_name }}
     environment:
@@ -33,7 +33,7 @@ services:
 
   {{ db_service_name }}:
     image: {{ mysql_image_tag }}
-    container_name: blog_smurfpandey_me_db
+    container_name: {{ db_service_name }}
     environment:
       MYSQL_ROOT_PASSWORD: {{ mysql_password }}
     volumes:
@@ -43,7 +43,7 @@ services:
 
   {{ wait_for_it_service_name }}:
     image: willwill/wait-for-it:latest
-    container_name: blog_smurfpandey_me_wait
+    container_name: {{ wait_for_it_service_name }}
     networks:
       - default
 

@@ -13,9 +13,9 @@ mysql_password: !vault |
           33306230353639323231376139393066383262313734373136356163336261376332623633303361
           3766376336623866610a336232373930303162353039303363393132666438316330356335353839
           36386234306437623234646262373738373537316361633332636131353334313934
-db_service_name: blog_smurf_db
-wait_for_it_service_name: blog_smurf_wait_for_db
-ghost_service_name: blog_smurf
+db_service_name: blog_smurfpandey_me_db
+wait_for_it_service_name: blog_smurfpandey_me_wait
+ghost_service_name: blog_smurfpandey_me
 domain_name: blog.smurfpandey.me
 blog_port: 2368
 sendgrid_api_key: !vault |

@@ -10,14 +10,14 @@
     - { role: 'certbot' }
     - { role: 'ssl-neerajverma_dev' }
     - { role: 'ssl-smurfpandey_me' }
-    - { role: 'nginx' }
+    - { role: 'nginx', tags: 'nginx' }
     - { role: 'blog_smurfpandey_me' }
     - { role: 'comments_smurfpandey_me' }
     - { role: 'matrix_riot', tags: 'matrix_riot' }
 
   vars:
     ansible_become_pass: "{{ lookup('env','SUDO_PASS') }}"
-    
+
   tasks:
   - name: Congratulations!
     debug:

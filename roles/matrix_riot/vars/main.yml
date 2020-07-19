@@ -6,7 +6,6 @@ matrix_user_uid: ~
 matrix_user_gid: ~
 
 app_directory: "/opt/matrix-riot"
-config_directory: "/opt/matrix-riot/config"
 data_directory: "/opt/matrix-riot/data"
 postgres_data_directory: "/opt/matrix-riot/data/postgres"
 synapse_data_directory: "/opt/matrix-riot/data/synapse"
@@ -15,6 +14,7 @@ docker_image:
   matrix_synapse: "matrixdotorg/synapse:v1.17.0"
   postgres: "postgres:9.6.18-alpine"
   wait_for_it: "willwill/wait-for-it:latest"
+riot_web_version: '1.7.1'
 docker_compose:
   matrix_synapse_service_name: "matrix_synapse"
   postgres_service_name: "matrix_postgres"
@@ -51,3 +51,10 @@ matrix_shared_secret: !vault |
           39393362316231653861323066626165633961316631613765383964353537613936643433616165
           3231313133663634630a666334653864313761303230346332303563356536613938383135306663
           65386635393034343438376639666233386335363938353464633765393166386433
+riot_domain_name: riot.neerajverma.dev
+riot_ssl_cert_name: 'neerajverma.dev'
+riot_web_directory: '{{ nginx_webhost_directory }}/riot-v{{ riot_web_version }}'
+riot_dns_zone: "neerajverma.dev"
+riot_dns_record: "riot"
+riot_dns_value: "pws.neerajverma.dev"
+

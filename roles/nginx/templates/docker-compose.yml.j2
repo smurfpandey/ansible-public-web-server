@@ -9,6 +9,7 @@ services:
       - "443:443/tcp"  # https
     volumes:
       - {{ nginx_config_directory }}:/etc/nginx/conf.d
+      - {{ nginx_webhost_directory }}:{{ nginx_webhost_directory }}
       - {{ nginx_access_log }}:{{ nginx_access_log }}
       - {{ nginx_error_log }}:{{ nginx_error_log }}
       - {{ ssl_dhparam_file }}:/etc/ssl/certs/dhparam-2048.pem

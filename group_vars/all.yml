@@ -18,5 +18,6 @@ cloudflare_api_key: !vault |
 cloudflare_credentials: '/opt/certbot/cloudflare_credentials.ini'
 docker_compose_binary: /usr/local/bin/docker-compose
 nginx_network_name: nginx_default
-nginx_config_directory: /opt/nginx/config
+nginx_config_directory: '/opt/nginx/config'
+nginx_webhost_directory: '/opt/nginx/web'
 letsencrypt_cert_location: /etc/letsencrypt
