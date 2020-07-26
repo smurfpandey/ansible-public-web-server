@@ -37,4 +37,4 @@ mail_sender: !vault |
           34393930646662346366336161616133373263376265326262383530646432626266
 blog_dns_zone: 'smurfpandey.me'
 blog_dns_record: 'blog'
-blog_dns_value: 'pws.neerajverma.dev'
+blog_dns_value: "{{ do_server_cname }}"

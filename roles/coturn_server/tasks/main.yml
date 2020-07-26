@@ -1,0 +1,87 @@
+---
+
+
+# Create user & group to run coturn server
+- name: Ensure Coturn group is created
+  group:
+    name: "{{ coturn_user_groupname }}"
+    gid: "{{ omit if coturn_user_gid is none else coturn_user_gid }}"
+    state: present
+  register: coturn_group
+
+- name: Set Coturn Group GID Variable
+  set_fact:
+    coturn_user_gid: "{{ coturn_group.gid }}"
+
+- name: Ensure Coturn user is created
+  user:
+    name: "{{ coturn_user_username }}"
+    uid: "{{ omit if coturn_user_uid is none else coturn_user_uid }}"
+    state: present
+    group: "{{ coturn_user_groupname }}"
+  register: coturn_user
+
+- name: Set Coturn Group UID Variable
+  set_fact:
+    coturn_user_uid: "{{ coturn_user.uid }}"
+
+- name: Create app directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ coturn_user_username }}"
+    group: "{{ coturn_user_groupname }}"
+  with_items:
+    - "{{ coturn_app_directory }}"
+
+- name: Pull required images from docker hub
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+  with_items:
+    - "{{ coturn_docker_image }}"
+
+- name: Ensure turnserver.conf installed
+  template:
+    src: "turnserver.conf.j2"
+    dest: "{{ coturn_config_path }}"
+    mode: "0644"
+    owner: "{{ coturn_user_username }}"
+    group: "{{ coturn_user_groupname }}"
+
+- name: Create docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ coturn_app_directory }}/docker-compose.yml"
+    owner: "{{ coturn_user_username }}"
+    group: "{{ coturn_user_groupname }}"
+  notify: restart turn_neerajverma_dev
+
+- name: Create systemd service file
+  template:
+    src: "{{ systemd_coturn_service_name }}.service.j2"
+    dest: "{{ coturn_app_directory }}/{{ systemd_coturn_service_name }}.service"
+  notify: reload systemd
+
+- name: Install systemd service
+  file:
+    src: "{{ coturn_app_directory }}/{{ systemd_coturn_service_name }}.service"
+    dest: "/etc/systemd/system/{{ systemd_coturn_service_name }}.service"
+    state: link
+  notify: reload systemd
+
+- name: ensure app starts on a fresh reboot
+  service:
+    name: "{{ systemd_coturn_service_name }}"
+    state: started
+    enabled: yes
+
+- name: Create CNAME record to point to the server
+  cloudflare_dns:
+    zone: "{{ coturn_base_domain }}"
+    record: "{{ coturn_subdomain }}"
+    type: CNAME
+    proxied: false
+    value: "{{ do_server_cname }}"
+    account_email: "{{ cloudflare_email }}"
+    account_api_token: "{{ cloudflare_api_key }}"

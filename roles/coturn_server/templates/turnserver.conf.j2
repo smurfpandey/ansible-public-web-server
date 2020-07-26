@@ -1,0 +1,23 @@
+use-auth-secret
+static-auth-secret={{ coturn_turn_static_auth_secret }}
+realm={{ coturn_subdomain }}.{{ coturn_base_domain }}
+
+min-port={{ coturn_turn_udp_min_port }}
+max-port={{ coturn_turn_udp_max_port }}
+external-ip={{ coturn_turn_external_ip_address }}
+
+log-file=stdout
+pidfile=/var/tmp/turnserver.pid
+userdb=/var/tmp/turnserver.db
+
+no-cli
+
+cert={{ coturn_tls_cert_path }}
+pkey={{ coturn_tls_key_path }}
+
+prod
+no-tcp-relay
+
+
+user-quota=3
+total-quota=10

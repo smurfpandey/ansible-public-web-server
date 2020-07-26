@@ -1,0 +1,21 @@
+---
+
+coturn_user_username: "coturn"
+coturn_user_groupname: "coturn"
+coturn_user_uid: ~
+coturn_user_gid: ~
+
+coturn_app_directory: "/opt/coturn-server"
+coturn_config_path: "{{ coturn_app_directory }}/turnserver.conf"
+coturn_docker_image: "instrumentisto/coturn:4.5.1.3"
+coturn_docker_service_name: "coturn"
+coturn_tls_port: 5349
+coturn_base_domain: neerajverma.dev
+coturn_subdomain: turn
+coturn_turn_external_ip_address: "{{ do_server_cname }}"
+coturn_turn_udp_min_port: 49152
+coturn_turn_udp_max_port: 49172
+coturn_tls_cert_path: "{{ letsencrypt_cert_location }}/live/{{ coturn_base_domain }}/fullchain.pem"
+coturn_tls_key_path: "{{ letsencrypt_cert_location }}/live/{{ coturn_base_domain }}/privkey.pem"
+
+systemd_coturn_service_name: turn_neerajverma_dev

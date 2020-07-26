@@ -9,7 +9,7 @@ app_port: 8080
 domain_name: 'comments.smurfpandey.me'
 app_dns_zone: 'smurfpandey.me'
 app_dns_record: 'comments'
-app_dns_value: 'pws.neerajverma.dev'
+app_dns_value: "{{ do_server_cname }}"
 app_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           66613931616361646464656434643030343831313263666137663761323064336462336261376364

@@ -6,6 +6,6 @@ nginx_dhparam_directory: /opt/nginx/certs
 docker_image_tag: nginx:1.19.0-alpine
 nginx_access_log: /var/log/nginx/access.log
 nginx_error_log: /var/log/nginx/error.log
-default_domain: pws.neerajverma.dev
+default_domain: "{{ do_server_cname }}"
 letsencrypt_cert_name: neerajverma.dev
 ssl_dhparam_file: /opt/nginx/certs/dhparam-2048.pem

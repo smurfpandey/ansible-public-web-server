@@ -42,7 +42,7 @@ matrix_synapse_storage_sql_log_level: "WARNING"
 matrix_synapse_root_log_level: "WARNING"
 matrix_dns_zone: "{{ matrix_server_name }}"
 matrix_dns_record: "matrix"
-matrix_dns_value: "pws.neerajverma.dev"
+matrix_dns_value: "{{ do_server_cname }}"
 matrix_ssl_cert_name: 'smurfpandey.me'
 matrix_shared_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -56,5 +56,5 @@ riot_ssl_cert_name: 'neerajverma.dev'
 riot_web_directory: '{{ nginx_webhost_directory }}/riot-v{{ riot_web_version }}'
 riot_dns_zone: "neerajverma.dev"
 riot_dns_record: "riot"
-riot_dns_value: "pws.neerajverma.dev"
+riot_dns_value: "{{ do_server_cname }}"
 

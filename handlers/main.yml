@@ -23,6 +23,10 @@
     name: matrix_smurfpandey_me
     state: restarted
 
+- name: restart turn_neerajverma_dev
+  service:
+    name: turn_neerajverma_dev
+    state: restarted
 
 - name: reload systemd
   systemd:
