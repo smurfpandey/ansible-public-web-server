@@ -5,8 +5,8 @@ services:
     image: {{ coturn_docker_image }}
     container_name: {{ coturn_docker_service_name }}
     ports:
-      - "{{ coturn_tls_port }}:3478/tcp"  # turn main port
-      - "{{ coturn_tls_port }}:3478/udp"  # turn main port
+      - "{{ coturn_non_tls_port }}:3478/tcp"  # turn main port
+      - "{{ coturn_non_tls_port }}:3478/udp"  # turn main port
       - "{{ coturn_tls_port }}:5349/tcp"  # turn main port
       - "{{ coturn_tls_port }}:5349/udp"  # turn main port
       - "{{ coturn_turn_udp_min_port }}-{{ coturn_turn_udp_max_port }}:{{ coturn_turn_udp_min_port }}-{{ coturn_turn_udp_max_port }}/udp"
