@@ -1,0 +1,91 @@
+---
+
+# Create user & group to run frps server
+- name: Ensure frps group is created
+  group:
+    name: "{{ frps_user_groupname }}"
+    gid: "{{ omit if frps_user_gid is none else frps_user_gid }}"
+    state: present
+  register: frps_group
+
+- name: Set frps Group GID Variable
+  set_fact:
+    frps_user_gid: "{{ frps_group.gid }}"
+
+- name: Ensure frps user is created
+  user:
+    name: "{{ frps_user_username }}"
+    uid: "{{ omit if frps_user_uid is none else frps_user_uid }}"
+    state: present
+    group: "{{ frps_user_groupname }}"
+  register: frps_user
+
+- name: Set frps Group UID Variable
+  set_fact:
+    frps_user_uid: "{{ frps_user.uid }}"
+
+- name: Create app directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ frps_user_username }}"
+    group: "{{ frps_user_groupname }}"
+  with_items:
+    - "{{ frps_app_directory }}"
+
+- name: Pull required images from docker hub
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+  with_items:
+    - "{{ frps_image_name }}:{{ frps_image_tag }}"
+
+- name: Create docker-compose.yml for app
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ frps_app_directory }}/docker-compose.yml"
+    owner: "{{ frps_user_username }}"
+    group: "{{ frps_user_groupname }}"
+  notify: restart frps_smurfpandey_me
+
+- name: Create config file for app
+  template:
+    src: frps.ini.j2
+    dest: "{{ config_file_path }}"
+    owner: "{{ frps_user_username }}"
+    group: "{{ frps_user_groupname }}"
+  notify: restart frps_smurfpandey_me
+
+- name: Create nginx config for app
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_config_directory }}/frps-smurfpandey-me.conf"
+  notify: reload nginx
+
+- name: Create app service file
+  template:
+    src: frps_smurfpandey_me.service.j2
+    dest: "{{ frps_app_directory }}/frps_smurfpandey_me.service"
+  notify: reload systemd
+
+- name: Install app service
+  file:
+    src: "{{ frps_app_directory }}/frps_smurfpandey_me.service"
+    dest: /etc/systemd/system/frps_smurfpandey_me.service
+    state: link
+
+- name: ensure app starts on a fresh reboot
+  service:
+    name: frps_smurfpandey_me
+    state: started
+    enabled: yes
+
+- name: Create CNAME record to point to the server
+  cloudflare_dns:
+    zone: "{{ frps_dns_zone }}"
+    record: "{{ frps_dns_record }}"
+    type: CNAME
+    proxied: yes
+    value: "{{ do_server_cname }}"
+    account_email: "{{ cloudflare_email }}"
+    account_api_token: "{{ cloudflare_api_key }}"

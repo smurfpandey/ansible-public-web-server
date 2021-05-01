@@ -28,6 +28,12 @@
     name: turn_neerajverma_dev
     state: restarted
 
+- name: restart frps_smurfpandey_me
+  service:
+    name: frps_smurfpandey_me
+    state: restarted
+
+
 - name: reload systemd
   systemd:
     daemon_reload: yes

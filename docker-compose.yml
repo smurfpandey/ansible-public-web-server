@@ -1,4 +1,7 @@
-control-machine:
+version: '3.2'
+
+services:
+  control-machine:
     image: smurfpandey/ansible-cm:latest
     environment:
       SUDO_PASS: ${SUDO_PASS}

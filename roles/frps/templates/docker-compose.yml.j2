@@ -1,0 +1,19 @@
+version: '3.2'
+
+services:
+  {{ frps_service_name }}:
+    image: {{ frps_image_name }}:{{ frps_image_tag }}
+    container_name: {{ frps_service_name }}
+    ports:
+      - "{{ frps_tcp_port }}:{{ frps_tcp_port }}/tcp"  # frps main port
+      - "{{ frps_proxy_vpn_port }}:{{ frps_proxy_vpn_port }}/{{ frps_proxy_vpn_protocol }}" # frps vpn proxy port
+    volumes:
+      - {{ config_file_path }}:/var/frps/config.ini
+    command: frps -c /var/frps/config.ini
+    networks:
+      - {{ nginx_network_name }}
+      - default
+
+networks:
+  {{ nginx_network_name }}:
+    external: true

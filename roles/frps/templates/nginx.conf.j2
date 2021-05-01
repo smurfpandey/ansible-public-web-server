@@ -2,7 +2,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name {{ domain_name }};
+        server_name {{ frps_domain_name }};
         location / {
                 rewrite ^ https://$host$request_uri? permanent;
         }
@@ -11,12 +11,12 @@ server {
 server {
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
-        server_name {{ domain_name }};
+        server_name {{ frps_domain_name }};
 
         server_tokens off;
 
-        ssl_certificate {{ letsencrypt_cert_location }}/live/{{ letsencrypt_cert_name }}/fullchain.pem;
-        ssl_certificate_key {{ letsencrypt_cert_location }}/live/{{ letsencrypt_cert_name }}/privkey.pem;
+        ssl_certificate {{ letsencrypt_cert_location }}/live/{{ frps_dns_zone }}/fullchain.pem;
+        ssl_certificate_key {{ letsencrypt_cert_location }}/live/{{ frps_dns_zone }}/privkey.pem;
 
         ssl_buffer_size 8k;
 
@@ -39,11 +39,7 @@ server {
         }
 
         location @nodejs {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header Host $http_host;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_pass http://{{ ghost_service_name }}:{{ blog_port }};
+                proxy_pass http://{{ frps_service_name }}:{{ frps_dashboard_port }};
                 add_header X-Frame-Options "SAMEORIGIN" always;
                 add_header X-XSS-Protection "1; mode=block" always;
                 add_header X-Content-Type-Options "nosniff" always;

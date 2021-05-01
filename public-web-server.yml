@@ -15,6 +15,7 @@
     - { role: 'comments_smurfpandey_me' }
     - { role: 'matrix_riot', tags: 'matrix_riot' }
     - { role: 'coturn_server', tags: 'coturn' }
+    - { role: 'frps', tags: 'frps' }
 
   vars:
     ansible_become_pass: "{{ lookup('env','SUDO_PASS') }}"
