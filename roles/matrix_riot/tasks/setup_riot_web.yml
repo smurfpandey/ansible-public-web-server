@@ -3,11 +3,11 @@
 - name: Download release from Github
   get_url:
     url: 'https://github.com/vector-im/riot-web/releases/download/v{{ riot_web_version }}/riot-v{{ riot_web_version }}.tar.gz'
-    dest: '{{ app_directory }}/riot-v{{ riot_web_version }}.tar.gz'
+    dest: '{{ matrix_app_directory }}/riot-v{{ riot_web_version }}.tar.gz'
 
 - name: Unarchive the app
   unarchive:
-    src: '{{ app_directory }}/riot-v{{ riot_web_version }}.tar.gz'
+    src: '{{ matrix_app_directory }}/riot-v{{ riot_web_version }}.tar.gz'
     dest: '{{ nginx_webhost_directory }}/'
     remote_src: yes
 

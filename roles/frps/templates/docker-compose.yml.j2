@@ -10,6 +10,11 @@ services:
     volumes:
       - {{ config_file_path }}:/var/frps/config.ini
     command: frps -c /var/frps/config.ini
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:{{ fluentbit_port }}
+        tag: frps
     networks:
       - {{ nginx_network_name }}
       - default

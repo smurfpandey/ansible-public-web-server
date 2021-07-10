@@ -5,10 +5,18 @@
 
 start() {
     docker-compose up -d {{ db_service_name }}
-    docker-compose run --rm {{ wait_for_it_service_name }} {{ db_service_name }}:3306 -- echo "blog db is up"
+    docker-compose run --rm {{ wait_for_it_service_name }} {{ db_service_name }}:3306 --strict -- echo "blog db is up"
+
+    if [[ $? -gt 0 ]] ; then
+        exit 124
+    fi
 
     docker-compose up -d {{ ghost_service_name }}
-    docker-compose run --rm {{ wait_for_it_service_name }} {{ ghost_service_name }}:{{ blog_port }} -- echo "blog is up"
+    docker-compose run --rm {{ wait_for_it_service_name }} {{ ghost_service_name }}:{{ blog_port }} --strict -- echo "blog is up"
+
+    if [[ $? -gt 0 ]] ; then
+        exit 124
+    fi
 }
 
 stop() {

@@ -31,8 +31,8 @@
     owner: "{{ matrix_user_username }}"
     group: "{{ matrix_user_groupname }}"
   with_items:
-    - "{{ app_directory }}"
-    - "{{ data_directory }}"
+    - "{{ matrix_app_directory }}"
+    - "{{ matrix_data_directory }}"
     - "{{ postgres_data_directory }}"
     - "{{ synapse_data_directory }}"
     - "{{ riot_data_directory }}"

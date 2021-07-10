@@ -17,9 +17,11 @@ cloudflare_api_key: !vault |
           6139623962366132356130313834393232623438353930646461
 cloudflare_credentials: '/opt/certbot/cloudflare_credentials.ini'
 docker_compose_binary: /usr/local/bin/docker-compose
+
 nginx_network_name: nginx_default
 nginx_config_directory: '/opt/nginx/config'
 nginx_webhost_directory: '/opt/nginx/web'
+
 letsencrypt_cert_location: /etc/letsencrypt
 coturn_turn_static_auth_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -30,3 +32,12 @@ coturn_turn_static_auth_secret: !vault |
           36303337633836313766306137633830313134663030623533386130623238613437
 do_server_cname: "pws.neerajverma.dev"
 coturn_domain_name: "turn.neerajverma.dev"
+
+matrix_synapse_service_name: "matrix_synapse"
+matrix_synapse_port: 8008
+# How to reach matrix server internally
+matrix_homeserver_container_url: "http://{{ matrix_synapse_service_name }}:{{ matrix_synapse_port }}"
+matrix_synapse_network_name: "matrix-riot_default"
+
+fluentbit_network_name: fluentbit_default
+fluentbit_port: 24224

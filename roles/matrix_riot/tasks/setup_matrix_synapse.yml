@@ -32,7 +32,7 @@
 - name: Create docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: "{{ app_directory }}/docker-compose.yml"
+    dest: "{{ matrix_app_directory }}/docker-compose.yml"
     owner: "{{ matrix_user_username }}"
     group: "{{ matrix_user_groupname }}"
   notify: restart matrix_smurfpandey_me
@@ -40,7 +40,7 @@
 - name: Create startup file
   template:
     src: matrix-synapse-service.sh.j2
-    dest: "{{ app_directory }}/matrix-synapse-service.sh"
+    dest: "{{ matrix_app_directory }}/matrix-synapse-service.sh"
     mode: 'a+x'
     owner: "{{ matrix_user_username }}"
     group: "{{ matrix_user_groupname }}"
@@ -72,12 +72,12 @@
 - name: Create systemd service file
   template:
     src: matrix_smurfpandey_me.service.j2
-    dest: "{{ app_directory }}/matrix_smurfpandey_me.service"
+    dest: "{{ matrix_app_directory }}/matrix_smurfpandey_me.service"
   notify: reload systemd
 
 - name: Install systemd service
   file:
-    src: "{{ app_directory }}/matrix_smurfpandey_me.service"
+    src: "{{ matrix_app_directory }}/matrix_smurfpandey_me.service"
     dest: /etc/systemd/system/matrix_smurfpandey_me.service
     state: link
 

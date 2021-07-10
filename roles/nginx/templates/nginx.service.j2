@@ -1,7 +1,7 @@
 [Unit]
 Description=nginx Service
-After=docker.service
-Requires=docker.service
+After=docker.service fluentbit.service
+Requires=docker.service fluentbit.service
 
 [Service]
 Type=oneshot

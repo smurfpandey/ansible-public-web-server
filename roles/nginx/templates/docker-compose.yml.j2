@@ -7,6 +7,11 @@ services:
     ports:
       - "80:80/tcp"  # http
       - "443:443/tcp"  # https
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:{{ fluentbit_port }}
+        tag: nginx
     volumes:
       - {{ nginx_config_directory }}:/etc/nginx/conf.d
       - {{ nginx_webhost_directory }}:{{ nginx_webhost_directory }}
@@ -14,4 +19,3 @@ services:
       - {{ nginx_error_log }}:{{ nginx_error_log }}
       - {{ ssl_dhparam_file }}:/etc/ssl/certs/dhparam-2048.pem
       - {{ letsencrypt_cert_location }}:{{ letsencrypt_cert_location }}
-

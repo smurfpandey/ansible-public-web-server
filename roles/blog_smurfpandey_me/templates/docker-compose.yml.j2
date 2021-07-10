@@ -24,7 +24,11 @@ services:
       mail__options__secureConnection: "true"
       mail__options__auth__user: "apikey"
       mail__options__auth__pass: "{{ sendgrid_api_key }}"
-
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:{{ fluentbit_port }}
+        tag: my-blog
     volumes:
       - {{ content_directory }}:/var/lib/ghost/content
     networks:

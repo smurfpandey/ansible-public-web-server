@@ -5,8 +5,8 @@ matrix_user_groupname: "matrix"
 matrix_user_uid: ~
 matrix_user_gid: ~
 
-app_directory: "/opt/matrix-riot"
-data_directory: "/opt/matrix-riot/data"
+matrix_app_directory: "/opt/matrix-riot"
+matrix_data_directory: "/opt/matrix-riot/data"
 postgres_data_directory: "/opt/matrix-riot/data/postgres"
 synapse_data_directory: "/opt/matrix-riot/data/synapse"
 riot_data_directory: "/opt/matrix-riot/data/riot"
@@ -16,10 +16,10 @@ docker_image:
   wait_for_it: "willwill/wait-for-it:latest"
 riot_web_version: '1.7.1'
 docker_compose:
-  matrix_synapse_service_name: "matrix_synapse"
+  matrix_synapse_service_name: " {{ matrix_synapse_service_name }}"
   postgres_service_name: "matrix_postgres"
   wait_for_it_service_name: "matrix_wait_for_it"
-matrix_synapse_port: 8008
+
 matrix_postgres_username: synapse
 matrix_postgres_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

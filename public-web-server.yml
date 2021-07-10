@@ -10,12 +10,13 @@
     - { role: 'certbot' }
     - { role: 'ssl-neerajverma_dev' }
     - { role: 'ssl-smurfpandey_me' }
-    - { role: 'nginx', tags: 'nginx' }
     - { role: 'blog_smurfpandey_me' }
     - { role: 'comments_smurfpandey_me' }
-    - { role: 'matrix_riot', tags: 'matrix_riot' }
-    - { role: 'coturn_server', tags: 'coturn' }
+    # - { role: 'mautrix_instagram', tags: 'mautrix_instagram' }
+    # - { role: 'matrix_riot', tags: 'matrix_riot' }
+    # - { role: 'coturn_server', tags: 'coturn' }
     - { role: 'frps', tags: 'frps' }
+    - { role: 'nginx', tags: 'nginx' }
 
   vars:
     ansible_become_pass: "{{ lookup('env','SUDO_PASS') }}"
