@@ -10,6 +10,7 @@
     - { role: 'certbot' }
     - { role: 'ssl-neerajverma_dev' }
     - { role: 'ssl-smurfpandey_me' }
+    - { role: 'ssl-smurfville_app' }
     - { role: 'blog_smurfpandey_me' }
     - { role: 'comments_smurfpandey_me' }
     # - { role: 'mautrix_instagram', tags: 'mautrix_instagram' }
